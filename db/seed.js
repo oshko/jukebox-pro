@@ -3,6 +3,7 @@ import db from "#db/client";
 import { createPlaylist } from "#db/queries/playlists";
 import { createPlaylistTrack } from "#db/queries/playlists_tracks";
 import { createTrack } from "#db/queries/tracks";
+import { createUser } from "./queries/users";
 
 await db.connect();
 await seed();
@@ -18,4 +19,14 @@ async function seed() {
     const playlistId = 1 + Math.floor(i / 2);
     await createPlaylistTrack(playlistId, i);
   }
+
+  await createUser({
+    username: "oshko",
+    password: "MagicPass$",
+  });
+
+  await createUser({
+    username: "Kate",
+    password: "SecretPassW0rd",
+  });
 }
