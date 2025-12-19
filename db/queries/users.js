@@ -15,3 +15,19 @@ export async function createUser({ username, password }) {
   } = await db.query(sql, [username, hashedPassword]);
   return user;
 }
+
+export async function loginByUsernamePassword({ username, password }) {
+  const {
+    rows: [user],
+  } = await db.query(
+    `
+    SELECT * FROM users
+    WHERE username = $1
+        `,
+    [username]
+  );
+  if (!user) return "There is no user registered!";
+  const isValidPass = await bcrypt.compare(password, user.password);
+  if (!isValidPass) return "Password is not right!";
+  return user;
+}
